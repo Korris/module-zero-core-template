@@ -18,6 +18,7 @@ using Abp.Dependency;
 using Abp.Json;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
+using AbpCompanyName.AbpProjectName.Notification;
 
 namespace AbpCompanyName.AbpProjectName.Web.Host.Startup
 {
@@ -116,6 +117,7 @@ namespace AbpCompanyName.AbpProjectName.Web.Host.Startup
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<AbpCommonHub>("/signalr");
+                endpoints.MapHub<ChatHubService>("/chatHub");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("defaultWithArea", "{area}/{controller=Home}/{action=Index}/{id?}");
             });

@@ -52,3 +52,24 @@ Ajax.get('/AbpUserConfiguration/GetAll').then(data=>{
   }).$mount('#app')
 })
 
+var chatHub = null;
+var connected = null;
+var baseUrl="http://localhost:21021/";
+abp.signalr.startConnection(baseUrl+"chatHub", function (connection) {
+  connected=connection
+  chatHub = connection; // Save a reference to the hub
+  connection.on('getMessage', function (message) { // Register for incoming messages
+    alert(message)
+    // store.commit(APP_MUTATIONS.ADD_NOTIFICATION, message);
+  });
+}).then(function (connection) {
+  abp.log.debug('Connected to myChatHub server!');
+  // store.dispatch(AppActions.subscribeNotification);
+  abp.event.trigger('connected');
+});
+document.addEventListener("click", function(){
+  var message="Test Notification";
+  connected.invoke("Send",message).catch(function(err){
+    return console.error(err.toString())
+  })
+})
